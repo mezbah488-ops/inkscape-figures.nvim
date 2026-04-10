@@ -13,7 +13,7 @@ A Neovim plugin for the Inkscape + LaTeX figure workflow.
 
 ## Requirements
 
-- The `inkscape-figures` scripts installed via `install.py`
+- The [`inkscape-figures-windows`](https://github.com/mezbah488-ops/inkscape-figures-windows) scripts installed via `install.py`
   (auto-detected from `%USERPROFILE%\inkscape-figures\fig.bat`)
 - Neovim 0.8+
 - Windows (the watcher uses `fig.bat`)
