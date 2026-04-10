@@ -67,22 +67,8 @@ local function start_watcher()
 		return
 	end
 
-	-- Open a small terminal split at the bottom
-	vim.cmd("botright split | term")
-	vim.cmd("resize " .. M.config.win_height)
-
-	-- Buffer name:
-	vim.api.nvim_buf_set_name(0, dir)
-
-	-- Build the command:
-	--   cd into the project dir, run fig init (safe: no-op if already inited),
-	--   then fig start (spawns both watchers)
-	local cmd = string.format('cd /d %s && call "%s" init && call "%s" start\13', vim.fn.shellescape(dir), fig, fig)
-	vim.fn.chansend(vim.b.terminal_job_id, cmd)
-
-	-- Jump back to the editor immediately
-	vim.cmd("wincmd k")
-
+	-- Run fig init + fig start silently in the background
+	vim.fn.jobstart({ "cmd", "/c", "call", fig, "init", "&&", "call", fig, "start" }, { detach = true, cwd = dir })
 	vim.notify("[inkscape-figures] Watcher started for: " .. dir, vim.log.levels.INFO)
 end
 
