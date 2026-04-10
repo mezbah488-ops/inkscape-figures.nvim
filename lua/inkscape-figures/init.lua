@@ -68,7 +68,8 @@ local function start_watcher()
 	end
 
 	-- Run fig init + fig start silently in the background
-	vim.fn.jobstart({ "cmd", "/c", "call", fig, "init", "&&", "call", fig, "start" }, { detach = true, cwd = dir })
+	local cmd = string.format('call "%s" init && call "%s" start', fig, fig)
+	vim.fn.jobstart({ "cmd", "/c", cmd }, { detach = true, cwd = dir })
 	vim.notify("[inkscape-figures] Watcher started for: " .. dir, vim.log.levels.INFO)
 end
 
