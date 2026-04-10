@@ -18,7 +18,9 @@ end
 -- ── Extract \incfig{name} from current line ───────────────────────────────────
 local function get_incfig_name()
   local line = vim.api.nvim_get_current_line()
-  return line:match("\\incfig%b[]%{(.-)%}")
+  -- Match \incfig[optional width]{name} or \incfig{name}
+  -- Try with optional [...] arg first, then plain
+  return line:match("\\incfig%[.-%]%{(.-)%}")
       or line:match("\\incfig%{(.-)%}")
 end
 
@@ -66,6 +68,10 @@ local function start_watcher()
   -- Open a small terminal split at the bottom
   vim.cmd("botright split | term")
   vim.cmd("resize " .. M.config.win_height)
+
+  -- Give the terminal a meaningful name (shows project folder name)
+  local short_dir = vim.fn.fnamemodify(dir, ":t")
+  vim.api.nvim_buf_set_name(0, "fig-watcher: " .. short_dir)
 
   -- Build the command:
   --   cd into the project dir, run fig init (safe: no-op if already inited),
