@@ -30,8 +30,15 @@ local function edit_figure()
     return
   end
   local fig = fig_path()
-  local cmd = string.format('start "" cmd /c "call \\"%s\\" edit %s"', fig, name)
-  if os.execute(cmd) then
+
+  -- Use jobstart for reliable non-blocking process spawning on Windows.
+  -- We call fig.bat via cmd /c so the batch file runs and exits cleanly.
+  local job = vim.fn.jobstart(
+    { "cmd", "/c", "call", fig, "edit", name },
+    { detach = true }   -- detach so Inkscape outlives the job handle
+  )
+
+  if job > 0 then
     vim.notify(string.format("inkscape-figures: opened '%s'", name), vim.log.levels.INFO)
   else
     vim.notify("inkscape-figures: failed — is fig.bat at " .. fig .. "?", vim.log.levels.ERROR)
