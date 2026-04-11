@@ -125,18 +125,13 @@ function M.setup(opts)
 		desc = "Edit the \\incfig{} figure on the current line in Inkscape",
 	})
 
-	-- Stop watchers when Neovim exits (silently, no window flash)
-	vim.api.nvim_create_autocmd("VimLeave", {
+	-- Stop watchers when Neovim exits
+	vim.api.nvim_create_autocmd("VimLeavePre", {
 		group = augroup,
 		once = true,
 		callback = function()
-			vim.fn.jobstart({
-				"powershell",
-				"-WindowStyle",
-				"Hidden",
-				"-Command",
-				"Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -like '*inkscape_figures.py*' -or $_.CommandLine -like '*watch_figures.py*' } | ForEach-Object { $_.Terminate() }",
-			}, { detach = true })
+			local fig = fig_path()
+			vim.fn.jobstart({ "cmd", "/c", "call", fig, "stop" })
 		end,
 	})
 end
