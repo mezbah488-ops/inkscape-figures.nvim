@@ -56,34 +56,11 @@ local function start_watcher()
 	local fig = fig_path()
 	local dir = vim.fn.expand("%:p:h")
 
-	-- Check fig.bat actually exists before doing anything
 	if vim.fn.filereadable(fig) == 0 then
-		vim.notify(
-			"inkscape-figures: fig.bat not found at "
-				.. fig
-				.. "\nRun install.py from your inkscape-figures folder first.",
-			vim.log.levels.WARN
-		)
 		return
 	end
 
-	-- Open a small terminal split at the bottom
-	vim.cmd("botright split | term")
-	vim.cmd("resize " .. M.config.win_height)
-
-	-- Buffer name:
-	vim.api.nvim_buf_set_name(0, dir)
-
-	-- Build the command:
-	--   cd into the project dir, run fig init (safe: no-op if already inited),
-	--   then fig start (spawns both watchers)
-	local cmd = string.format('cd /d %s && call "%s" init && call "%s" start\13', vim.fn.shellescape(dir), fig, fig)
-	vim.fn.chansend(vim.b.terminal_job_id, cmd)
-
-	-- Jump back to the editor immediately
-	vim.cmd("wincmd k")
-
-	vim.notify("[inkscape-figures] Watcher started for: " .. dir, vim.log.levels.INFO)
+	os.execute(string.format("start /min powershell -Command \"cd '%s'; fig init; fig start\"", dir))
 end
 
 -- ── Buffer-local setup (keymaps) ─────────────────────────────────────────────
