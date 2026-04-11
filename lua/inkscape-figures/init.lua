@@ -131,7 +131,7 @@ function M.setup(opts)
 		once = true,
 		callback = function()
 			os.execute('taskkill /fi "WINDOWTITLE eq SVG-Exporter" /f >nul 2>&1')
-			os.execute('taskkill /fi "WINDOWTITLE eq Inkscape-Opener*" /f >nul 2>&1')
+			os.execute('taskkill /fi "WINDOWTITLE eq Inkscape-Opener" /f >nul 2>&1')
 		end,
 	})
 end
