@@ -124,6 +124,15 @@ function M.setup(opts)
 	vim.api.nvim_create_user_command("InkscapeEdit", edit_figure, {
 		desc = "Edit the \\incfig{} figure on the current line in Inkscape",
 	})
+	-- Closing the watchers silently
+	vim.api.nvim_create_autocmd("VimLeavePre", {
+		group = augroup,
+		once = true,
+		callback = function()
+			local fig = fig_path()
+			os.execute(string.format('call "%s" stop', fig))
+		end,
+	})
 end
 
 return M
