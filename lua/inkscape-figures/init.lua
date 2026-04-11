@@ -124,6 +124,16 @@ function M.setup(opts)
 	vim.api.nvim_create_user_command("InkscapeEdit", edit_figure, {
 		desc = "Edit the \\incfig{} figure on the current line in Inkscape",
 	})
+
+	-- Stop watchers when Neovim exits
+	vim.api.nvim_create_autocmd("VimLeave", {
+		group = augroup,
+		once = true,
+		callback = function()
+			local fig = fig_path()
+			vim.fn.jobstart({ "cmd", "/c", "call", fig, "stop" }, { detach = true })
+		end,
+	})
 end
 
 return M
