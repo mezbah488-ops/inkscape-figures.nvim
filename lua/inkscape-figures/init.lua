@@ -132,7 +132,10 @@ function M.setup(opts)
 		callback = function()
 			os.execute(
 				'powershell -WindowStyle Hidden -Command "'
-					.. "Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -like '*inkscape_figures.py*' -or $_.CommandLine -like '*watch_figures.py*' } | ForEach-Object { $_.Terminate() }"
+					.. "Get-WmiObject Win32_Process "
+					.. "| Where-Object { ($_.CommandLine -like '*inkscape_figures.py*' -and $_.CommandLine -like '*watch*') "
+					.. "-or ($_.CommandLine -like '*watch_figures.py*') } "
+					.. "| ForEach-Object { $_.Terminate() }"
 					.. '"'
 			)
 		end,
