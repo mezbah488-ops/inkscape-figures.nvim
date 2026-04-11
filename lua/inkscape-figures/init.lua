@@ -131,9 +131,8 @@ function M.setup(opts)
 		once = true,
 		callback = function()
 			os.execute(
-				"powershell -WindowStyle Hidden -Command \"Get-Process cmd | Where-Object {$_.MainWindowTitle -like 'Inkscape-Opener*'} | Stop-Process -Force\" >nul 2>&1"
+				"powershell -WindowStyle Hidden -Command \"Get-Process cmd | Where-Object {$_.MainWindowTitle -like 'Inkscape-Opener*' -or $_.MainWindowTitle -eq 'SVG-Exporter'} | Stop-Process -Force\""
 			)
-			os.execute('taskkill /fi "WINDOWTITLE eq SVG-Exporter*" /f >nul 2>&1')
 		end,
 	})
 end
