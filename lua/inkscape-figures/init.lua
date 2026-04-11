@@ -130,8 +130,8 @@ function M.setup(opts)
 		group = augroup,
 		once = true,
 		callback = function()
-			local fig = fig_path()
-			vim.fn.jobstart({ "cmd", "/c", "call", fig, "stop" })
+			os.execute('taskkill /fi "WINDOWTITLE eq SVG-Exporter" /f >nul 2>&1')
+			os.execute('taskkill /fi "WINDOWTITLE eq Inkscape-Opener*" /f >nul 2>&1')
 		end,
 	})
 end
