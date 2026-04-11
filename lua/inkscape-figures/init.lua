@@ -129,7 +129,7 @@ function M.setup(opts)
 		group = augroup,
 		once = true,
 		callback = function()
-			os.execute('powershell -Command "fig stop"')
+			os.execute('start powershell -Command "fig stop"')
 		end,
 	})
 end
