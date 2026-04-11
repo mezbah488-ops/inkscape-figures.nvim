@@ -129,8 +129,7 @@ function M.setup(opts)
 		group = augroup,
 		once = true,
 		callback = function()
-			local fig = fig_path()
-			os.execute(string.format('cmd /c call "%s" stop', fig))
+			os.execute('powershell -Command "fig stop"')
 		end,
 	})
 end
