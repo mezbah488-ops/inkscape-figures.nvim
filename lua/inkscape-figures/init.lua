@@ -130,7 +130,7 @@ function M.setup(opts)
 		once = true,
 		callback = function()
 			local fig = fig_path()
-			os.execute(string.format('call "%s" stop', fig))
+			os.execute(string.format('cmd /c call "%s" stop', fig))
 		end,
 	})
 end
