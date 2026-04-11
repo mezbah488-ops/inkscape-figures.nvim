@@ -126,12 +126,17 @@ function M.setup(opts)
 	})
 
 	-- Stop watchers when Neovim exits (silently, no window flash)
-	vim.api.nvim_create_autocmd("VimLeavePre", {
+	vim.api.nvim_create_autocmd("VimLeave", {
 		group = augroup,
 		once = true,
 		callback = function()
-			os.execute('taskkill /fi "WINDOWTITLE eq SVG-Exporter" /f >nul 2>&1')
-			os.execute('taskkill /fi "WINDOWTITLE eq Inkscape-Opener" /f >nul 2>&1')
+			vim.fn.jobstart({
+				"powershell",
+				"-WindowStyle",
+				"Hidden",
+				"-Command",
+				"Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -like '*inkscape_figures.py*' -or $_.CommandLine -like '*watch_figures.py*' } | ForEach-Object { $_.Terminate() }",
+			}, { detach = true })
 		end,
 	})
 end
