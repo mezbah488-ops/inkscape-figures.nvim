@@ -67,7 +67,7 @@ local function start_watcher()
 		return
 	end
 
-		-- Open a small terminal split at the bottom
+	-- Open a small terminal split at the bottom
 	vim.cmd("botright split | term")
 	vim.cmd("resize " .. M.config.win_height)
 
@@ -125,13 +125,18 @@ function M.setup(opts)
 		desc = "Edit the \\incfig{} figure on the current line in Inkscape",
 	})
 
-	-- Stop watchers when Neovim exits
+	-- Stop watchers when Neovim exits (silently, no window flash)
 	vim.api.nvim_create_autocmd("VimLeave", {
 		group = augroup,
 		once = true,
 		callback = function()
-			local fig = fig_path()
-			vim.fn.jobstart({ "cmd", "/c", "call", fig, "stop" }, { detach = true })
+			vim.fn.jobstart({
+				"powershell",
+				"-WindowStyle",
+				"Hidden",
+				"-Command",
+				"Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -like '*inkscape_figures.py*' -or $_.CommandLine -like '*watch_figures.py*' } | ForEach-Object { $_.Terminate() }",
+			}, { detach = true })
 		end,
 	})
 end
