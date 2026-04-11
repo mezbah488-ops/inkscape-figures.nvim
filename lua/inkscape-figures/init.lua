@@ -124,16 +124,6 @@ function M.setup(opts)
 	vim.api.nvim_create_user_command("InkscapeEdit", edit_figure, {
 		desc = "Edit the \\incfig{} figure on the current line in Inkscape",
 	})
-
-	-- Stop watchers when Neovim exits
-	vim.api.nvim_create_autocmd("VimLeavePre", {
-		group = augroup,
-		once = true,
-		callback = function()
-			os.execute('taskkill /fi "WINDOWTITLE eq SVG-Exporter" /f >nul 2>&1')
-			os.execute('taskkill /fi "WINDOWTITLE eq Inkscape-Opener*" /f >nul 2>&1')
-		end,
-	})
 end
 
 return M
