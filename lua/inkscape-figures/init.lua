@@ -60,9 +60,7 @@ local function start_watcher()
 		return
 	end
 
-	os.execute(
-		string.format("start powershell -Command \"cd '%s'; fig init; fig start; Start-Sleep -Milliseconds 300\"", dir)
-	)
+	os.execute(string.format("start powershell -Command \"cd '%s'; fig init; fig start\"", dir))
 end
 
 -- ── Buffer-local setup (keymaps) ─────────────────────────────────────────────
